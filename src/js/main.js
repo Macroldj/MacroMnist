@@ -81,10 +81,9 @@ class Main {
             if (Math.min(...inputs) === 255) {
                 return;
             }
-
             $.ajax({
                 url: '/api/mnist',
-                type: 'post',
+                method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(inputs),
                 success: (data) => {

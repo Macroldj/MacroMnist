@@ -1,17 +1,16 @@
 import os
-
-import input_data
 import model
 import tensorflow as tf
 
-data = input_data.read_data_sets('MNIST_data', one_hot=True)
+from tensorflow.examples.tutorials.mnist import input_data
+data = input_data.read_data_sets("/tmp/data/", one_hot=True)
 
-#create model
+# model
 with tf.variable_scope("regression"):
     x = tf.placeholder(tf.float32, [None, 784])
     y, variables = model.regression(x)
 
-#train
+# train
 y_ = tf.placeholder("float", [None, 10])
 cross_entropy = -tf.reduce_sum(y_ * tf.log(y))
 train_step = tf.train.GradientDescentOptimizer(0.01).minimize(cross_entropy)
@@ -25,9 +24,9 @@ with tf.Session() as sess:
         batch_xs, batch_ys = data.train.next_batch(100)
         sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
 
-    print((sess.run(accuracy, feed_dict={x:data.test.images, y_:data.test.labels})))
+    print(sess.run(accuracy, feed_dict={x: data.test.images, y_: data.test.labels}))
 
     path = saver.save(
-        sess,os.path.join(os.path.dirname(__file__),'data','regression.ckpt'),
-        write_meta_graph=False,write_state=False)
+        sess, os.path.join(os.path.dirname(__file__), 'data', 'regression.ckpt'),
+        write_meta_graph=False, write_state=False)
     print("Saved:", path)
