@@ -19,11 +19,11 @@ with tf.variable_scope("convolutional"):
     keep_prob = tf.placeholder("float")
     y2, variables = model.convolutional(x, keep_prob)
 saver = tf.train.Saver(variables)
-saver.restore(sess, "mnist/data/convolutional.ckpt") #
+saver.restore(sess, "mnist/data/convolutional.ckpt")
 
 
 def regression(input):
-    return sess.run(y1, feed_dict={x: input}).flatten().tolist()  # 
+    return sess.run(y1, feed_dict={x: input}).flatten().tolist()
 
 
 def convolutional(input):
@@ -34,7 +34,7 @@ def convolutional(input):
 app = Flask(__name__)
 
 
-@app.route('/api/mnist', methods=['post'])
+@app.route('/api/mnist', methods=['POST'])
 def mnist():
     input = ((255 - np.array(request.json, dtype=np.uint8)) / 255.0).reshape(1, 784)
     output1 = regression(input)
@@ -44,9 +44,8 @@ def mnist():
 
 @app.route('/')
 def main():
-    return render_template('index.html')  # 验证的首个页面
+    return render_template('index.html')
 
 
 if __name__ == '__main__':
-    app.debug=True
-    app.run(host='0.0.0.0',port=8000)
+    app.run(host="0.0.0.0")
